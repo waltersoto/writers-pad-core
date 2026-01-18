@@ -2,7 +2,6 @@
 
 A premium, block-based rich text editor for the modern web. Built on top of Tiptap, WritersPad provides a distraction-free writing experience with powerful features out of the box.
 
-![WritersPad Demo](https://via.placeholder.com/800x400?text=WritersPad+Demo)
 
 ## Features
 
