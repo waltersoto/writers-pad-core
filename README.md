@@ -2,8 +2,6 @@
 
 Welcome to the WritersPad repository. This project is home to a premium, block-based rich text editor built on Tiptap.
 
-![WritersPad Banner](https://via.placeholder.com/1200x400?text=WritersPad)
-
 ## Projects
 
 ### 📦 [WritersPad.Core](./WritersPad.Core)
