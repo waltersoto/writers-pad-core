@@ -1,0 +1,84 @@
+@{
+    ViewData["Title"] = "Premium Editor";
+}
+
+<div class="text-center mb-5">
+    <h1 class="display-4">WritersPad Premium</h1>
+    <p class="lead">A rich, clean writing experience.</p>
+</div>
+
+<!-- Editor Container -->
+<div id="editor-container" style="border: 1px solid #e0e0e0; border-radius: 8px; min-height: 500px; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></div>
+
+<div class="mt-4">
+    <button id="btn-markdown" class="btn btn-primary me-2">Export Markdown</button>
+    <button id="btn-html" class="btn btn-secondary">Export HTML</button>
+</div>
+
+<!-- Stats Display -->
+<div class="mt-3 p-3 bg-light border rounded d-flex gap-4">
+    <div><strong>Words:</strong> <span id="stat-words">0</span></div>
+    <div><strong>Characters:</strong> <span id="stat-chars">0</span></div>
+    <div><strong>Reading Time:</strong> <span id="stat-time">0 min</span></div>
+</div>
+
+<div class="mt-4">
+    <h5>Output:</h5>
+    <pre id="output-area" class="bg-light p-3 border rounded" style="min-height: 100px; white-space: pre-wrap;"></pre>
+</div>
+
+@section Scripts {
+    <!-- Load the WritersPad Library Styles & Script -->
+    <link rel="stylesheet" href="~/lib/writerspad/style.css" />
+    <script type="module">
+        import { WritersPad } from '/lib/writerspad/writers-pad-core.js';
+
+        const editor = new WritersPad({
+            element: document.getElementById('editor-container'),
+            defaultTheme: 'dark',
+            stickyToolbar: true,
+            placeholder: 'Start writing your story...',
+            fonts: ['Inter', 'Merriweather', 'Roboto', 'Open Sans', 'Lato'],
+            onUpdate: (html) => {
+                
+            },
+            onStatsUpdate: (stats) => {
+                document.getElementById('stat-words').innerText = stats.words;
+                document.getElementById('stat-chars').innerText = stats.characters;
+                document.getElementById('stat-time').innerText = stats.readingTimeMinutes + ' min';
+            },
+            onImageUpload: (file) => {
+                return new Promise((resolve) => {
+                    console.log('Uploading file:', file.name);
+                    setTimeout(() => {
+                        // Mock upload - return object URL
+                        const url = URL.createObjectURL(file);
+                        resolve(url);
+                    }, 1000);
+                });
+            },
+            onImageSelect: () => {
+                return new Promise((resolve) => {
+                    if (confirm('Select "Mock Image" from gallery?')) {
+                        resolve('https://source.unsplash.com/random/800x600');
+                    } else {
+                        resolve(null);
+                    }
+                });
+            }
+        });
+
+        document.getElementById('btn-markdown').addEventListener('click', () => {
+             const md = editor.getMarkdown();
+             document.getElementById('output-area').innerText = md;
+        });
+
+        document.getElementById('btn-html').addEventListener('click', () => {
+             const html = editor.getHTML();
+             document.getElementById('output-area').innerText = html;
+        });
+
+        // Expose for debugging
+        window.editorInstance = editor;
+    </script>
+}

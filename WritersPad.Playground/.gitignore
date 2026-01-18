@@ -1,0 +1,51 @@
+# ASP.NET Core
+bin/
+obj/
+publish/
+
+# Visual Studio
+.vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# NuGet
+packages/
+*.nuget.props
+*.nuget.targets
+
+# Lib folder (if you want to exclude downloaded libs but keep the folder)
+# wwwroot/lib/ 
+# KEEP WritersPad Core lib as it is manually copied
+!wwwroot/lib/writerspad/
+
+# Misc
+*.log
+.DS_Store
+Thumbs.db
