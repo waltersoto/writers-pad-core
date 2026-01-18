@@ -5,6 +5,14 @@
     "description": "A premium, block-based rich text editor built on Tiptap.",
     "author": "Walter M. Soto",
     "license": "MIT",
+    "homepage": "https://github.com/waltersoto/writers-pad-core#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/waltersoto/writers-pad-core.git"
+    },
+    "bugs": {
+        "url": "https://github.com/waltersoto/writers-pad-core/issues"
+    },
     "keywords": [
         "editor",
         "tiptap",
