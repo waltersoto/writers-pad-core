@@ -11,6 +11,7 @@ export interface WritersPadOptions {
     stickyToolbar?: boolean;
     placeholder?: string;
     fonts?: string[];
+    toolbar?: string[][];
     onUpdate?: (html: string) => void;
     onStatsUpdate?: (stats: WritersPadStats) => void;
     onImageUpload?: (file: File) => Promise<string>;

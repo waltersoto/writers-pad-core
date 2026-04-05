@@ -40,6 +40,7 @@ export interface WritersPadOptions {
     stickyToolbar?: boolean;
     placeholder?: string;
     fonts?: string[];
+    toolbar?: string[][];
     onUpdate?: (html: string) => void;
     onStatsUpdate?: (stats: WritersPadStats) => void;
     onImageUpload?: (file: File) => Promise<string>;
@@ -196,10 +197,18 @@ export class WritersPad {
     }
 
     private renderToolbar() {
-        this.toolbar.innerHTML = `
-      <!-- Typography Group -->
-      <div class="wp-toolbar-group">
-        <select class="wp-select" id="wp-font-family" title="Font Family">
+        const defaultToolbar = [
+            ['fontFamily', 'heading'],
+            ['bold', 'italic', 'underline', 'strike', 'subscript', 'superscript', 'color', 'highlight', 'unsetAll'],
+            ['align-left', 'align-center', 'align-right'],
+            ['bulletList', 'orderedList', 'taskList', 'indent', 'outdent'],
+            ['image', 'link', 'codeBlock', 'horizontalRule', 'blockquote'],
+            ['undo', 'redo'],
+            ['theme-toggle']
+        ];
+
+        const toolbarElements: Record<string, string> = {
+            'fontFamily': `<select class="wp-select" id="wp-font-family" title="Font Family">
           <option value="" selected>Default</option>
           <option value="Merriweather">Merriweather</option>
           <option value="Inter">Inter</option>
@@ -216,63 +225,56 @@ export class WritersPad {
           <option value="Lucida Console">Lucida Console</option>
           <option value="Impact">Impact</option>
           <option value="Palatino Linotype">Palatino Linotype</option>
-        </select>
-        <select class="wp-select" id="wp-heading" title="Heading Level">
+        </select>`,
+            'heading': `<select class="wp-select" id="wp-heading" title="Heading Level">
           <option value="p">Normal</option>
           <option value="h1">H1</option>
           <option value="h2">H2</option>
           <option value="h3">H3</option>
-        </select>
-      </div>
+        </select>`,
+            'bold': `<button class="wp-btn" data-command="bold" title="Bold">${icons.bold}</button>`,
+            'italic': `<button class="wp-btn" data-command="italic" title="Italic">${icons.italic}</button>`,
+            'underline': `<button class="wp-btn" data-command="underline" title="Underline">${icons.underline}</button>`,
+            'strike': `<button class="wp-btn" data-command="strike" title="Strikethrough">${icons.strike}</button>`,
+            'subscript': `<button class="wp-btn" data-command="subscript" title="Subscript">${icons.subscript}</button>`,
+            'superscript': `<button class="wp-btn" data-command="superscript" title="Superscript">${icons.superscript}</button>`,
+            'color': `<button class="wp-btn" data-command="color" title="Text Color">${icons.colorText}</button>`,
+            'highlight': `<button class="wp-btn" data-command="highlight" title="Highlight Color">${icons.highlight}</button>`,
+            'unsetAll': `<button class="wp-btn" data-command="unsetAll" title="Clear Formatting">${icons.clearFormat}</button>`,
+            'align-left': `<button class="wp-btn" data-command="align-left" title="Align Left">${icons.alignLeft}</button>`,
+            'align-center': `<button class="wp-btn" data-command="align-center" title="Align Center">${icons.alignCenter}</button>`,
+            'align-right': `<button class="wp-btn" data-command="align-right" title="Align Right">${icons.alignRight}</button>`,
+            'bulletList': `<button class="wp-btn" data-command="bulletList" title="Bullet List">${icons.bulletList}</button>`,
+            'orderedList': `<button class="wp-btn" data-command="orderedList" title="Ordered List">${icons.orderedList}</button>`,
+            'taskList': `<button class="wp-btn" data-command="taskList" title="Task List">${icons.taskList}</button>`,
+            'indent': `<button class="wp-btn" data-command="indent" title="Indent">${icons.indent}</button>`,
+            'outdent': `<button class="wp-btn" data-command="outdent" title="Outdent">${icons.outdent}</button>`,
+            'image': `<button class="wp-btn" data-command="image" title="Insert Image">${icons.image}</button>`,
+            'link': `<button class="wp-btn" data-command="link" title="Insert Link">${icons.link}</button>`,
+            'codeBlock': `<button class="wp-btn" data-command="codeBlock" title="Code Block">${icons.code}</button>`,
+            'horizontalRule': `<button class="wp-btn" data-command="horizontalRule" title="Horizontal Rule">${icons.horizontalRule}</button>`,
+            'blockquote': `<button class="wp-btn" data-command="blockquote" title="Blockquote">${icons.blockquote}</button>`,
+            'undo': `<button class="wp-btn" data-command="undo" title="Undo">${icons.undo}</button>`,
+            'redo': `<button class="wp-btn" data-command="redo" title="Redo">${icons.redo}</button>`,
+            'theme-toggle': `<button class="wp-btn" data-command="theme-toggle" title="Toggle Dark/Light Mode">${icons.moon}</button>`
+        };
 
-      <!-- Formatting Group -->
-      <div class="wp-toolbar-group">
-        <button class="wp-btn" data-command="bold" title="Bold">${icons.bold}</button>
-        <button class="wp-btn" data-command="italic" title="Italic">${icons.italic}</button>
-        <button class="wp-btn" data-command="underline" title="Underline">${icons.underline}</button>
-        <button class="wp-btn" data-command="strike" title="Strikethrough">${icons.strike}</button>
-        <button class="wp-btn" data-command="subscript" title="Subscript">${icons.subscript}</button>
-        <button class="wp-btn" data-command="superscript" title="Superscript">${icons.superscript}</button>
-        <button class="wp-btn" data-command="color" title="Text Color">${icons.colorText}</button>
-        <button class="wp-btn" data-command="highlight" title="Highlight Color">${icons.highlight}</button>
-        <button class="wp-btn" data-command="unsetAll" title="Clear Formatting">${icons.clearFormat}</button>
-      </div>
+        const config = this.options.toolbar || defaultToolbar;
+        let html = '';
 
-      <!-- Alignment Group -->
-      <div class="wp-toolbar-group">
-        <button class="wp-btn" data-command="align-left" title="Align Left">${icons.alignLeft}</button>
-        <button class="wp-btn" data-command="align-center" title="Align Center">${icons.alignCenter}</button>
-        <button class="wp-btn" data-command="align-right" title="Align Right">${icons.alignRight}</button>
-      </div>
+        config.forEach(group => {
+            if (group.length === 0) return;
+            const style = (group.length === 1 && group[0] === 'theme-toggle') ? ' style="margin-left: auto;"' : '';
+            html += `<div class="wp-toolbar-group"${style}>`;
+            group.forEach(item => {
+                if (toolbarElements[item]) {
+                    html += toolbarElements[item];
+                }
+            });
+            html += `</div>`;
+        });
 
-      <!-- Lists Group -->
-      <div class="wp-toolbar-group">
-        <button class="wp-btn" data-command="bulletList" title="Bullet List">${icons.bulletList}</button>
-        <button class="wp-btn" data-command="orderedList" title="Ordered List">${icons.orderedList}</button>
-        <button class="wp-btn" data-command="taskList" title="Task List">${icons.taskList}</button>
-        <button class="wp-btn" data-command="indent" title="Indent">${icons.indent}</button>
-        <button class="wp-btn" data-command="outdent" title="Outdent">${icons.outdent}</button>
-      </div>
-
-      <!-- Insert Group -->
-      <div class="wp-toolbar-group">
-        <button class="wp-btn" data-command="image" title="Insert Image">${icons.image}</button>
-        <button class="wp-btn" data-command="link" title="Insert Link">${icons.link}</button>
-        <button class="wp-btn" data-command="codeBlock" title="Code Block">${icons.code}</button>
-        <button class="wp-btn" data-command="horizontalRule" title="Horizontal Rule">${icons.horizontalRule}</button>
-        <button class="wp-btn" data-command="blockquote" title="Blockquote">${icons.blockquote}</button>
-      </div>
-
-      <!-- History Group -->
-      <div class="wp-toolbar-group">
-        <button class="wp-btn" data-command="undo" title="Undo">${icons.undo}</button>
-        <button class="wp-btn" data-command="redo" title="Redo">${icons.redo}</button>
-      </div>
-
-       <div class="wp-toolbar-group" style="margin-left: auto;">
-         <button class="wp-btn" data-command="theme-toggle" title="Toggle Dark/Light Mode">${icons.moon}</button>
-       </div>
-    `;
+        this.toolbar.innerHTML = html;
 
         // Bind events
         this.toolbar.querySelectorAll('.wp-btn').forEach(btn => {

@@ -58,6 +58,10 @@ const editor = new WritersPad({
     defaultTheme: 'light',      // 'light' | 'dark'
     fonts: string[],           // Array of Google Fonts to load
     stickyToolbar: true,        // Keep toolbar visible on scroll
+    toolbar: [                  // Optional: Array of toolbar button groups (if omitted, the default toolbar is displayed).
+        ['fontFamily', 'heading'],
+        ['bold', 'italic', 'theme-toggle']
+    ],
 
     // Events
     onUpdate: (html) => {
