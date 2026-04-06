@@ -93,6 +93,19 @@ const editor = new WritersPad({
 });
 ```
 
+#### Available Toolbar Values
+You can use any of the following string identifiers when customizing the `toolbar` array:
+
+| Category | Values |
+| --- | --- |
+| **Typography** | `'fontFamily'`, `'heading'` |
+| **Formatting** | `'bold'`, `'italic'`, `'underline'`, `'strike'`, `'subscript'`, `'superscript'`, `'color'`, `'highlight'`, `'unsetAll'` |
+| **Alignment** | `'align-left'`, `'align-center'`, `'align-right'` |
+| **Lists** | `'bulletList'`, `'orderedList'`, `'taskList'`, `'indent'`, `'outdent'` |
+| **Insert** | `'image'`, `'link'`, `'codeBlock'`, `'horizontalRule'`, `'blockquote'` |
+| **History** | `'undo'`, `'redo'` |
+| **Controls** | `'theme-toggle'` |
+
 ### 3. API Methods
 
 You can interact with the editor instance programmatically.
